@@ -13,8 +13,11 @@ Vagrant.configure("2") do |config|
     vb.cpus = 2
   end
 
+  config.vm.provision "file", source: "~/.ssh/id_rsa.pub", destination: "~/.ssh/me.pub"
+  config.vm.provision "shell", inline: <<-SHELL
+    cat /home/vagrant/.ssh/me.pub >> /home/vagrant/.ssh/authorized_keys
+  SHELL
   
-  # ispmanager
   config.vm.define "chatwoot" do |chatwoot|
     chatwoot.vm.hostname = 'chatwoot.loc'
     chatwoot.vm.network "private_network", ip: "192.168.20.60"
